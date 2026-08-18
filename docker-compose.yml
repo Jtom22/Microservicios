@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  auth-db:
+    image: mongo:6.0
+    container_name: auth-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secretpassword
+      MONGO_INITDB_DATABASE: auth_oauth_db
+    volumes:
+      # Usamos el nombre exacto de la carpeta que tu .gitignore ya está protegiendo:
+      - ./.mongo_data:/data/db
+
+networks:
+  auth-network:
+    driver: bridge
