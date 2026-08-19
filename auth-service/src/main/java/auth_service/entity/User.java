@@ -36,10 +36,14 @@ public class User extends Auditable {
        @Field("last_name")
     private String lastName;
 
+    @Field("password")
+    private String password;
+
+
 
 // Esto evita hacer un findByIdIn() o usar @DBRef cada vez que el usuario inicia sesión.
     @Field("roles")
-    private Set<Role> roles = new HashSet<>(); 
+    private Set<RoleType> roles = new HashSet<>(); 
 
 
 

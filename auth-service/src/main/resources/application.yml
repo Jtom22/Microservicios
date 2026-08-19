@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: auth-service
+ 
+  data:
+    mongodb:
+      # Coincide con las credenciales del docker-compose.yml raíz (auth-db)
+      spring.mongodb.uri: mongodb://${MONGO_USER:admin}:${MONGO_PASSWORD:secretpassword}@localhost:27017/auth_oauth_db?authSource=admin
+ 
+server:
+  port: ${SERVER_PORT:8081}
+ 
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
+ 
+# Clave para firmar los JWT. En dev usa el default; en cualquier entorno real,
+# define JWT_SECRET como variable de entorno y NO la subas al repo.
+jwt:
+  secret: ${JWT_SECRET:4a7b9e2c8f1d6a3b0e5c9f8d7a6b2e1f4c3b2a1d0e9f8a7b6c5d4e3f2a1k3l2a}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+ 

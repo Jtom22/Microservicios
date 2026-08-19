@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+
 public record UserRegisterDTO(
     @NotBlank(message = "El correo electrónico no puede estar vacío")
     @Email(message = "El formato del correo electrónico es inválido")
