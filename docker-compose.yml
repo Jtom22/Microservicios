@@ -7,12 +7,14 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secretpassword
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: auth_oauth_db
     volumes:
       # Usamos el nombre exacto de la carpeta que tu .gitignore ya está protegiendo:
       - ./.mongo_data:/data/db
+    networks:
+      - auth-network
 
 networks:
   auth-network:

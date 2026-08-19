@@ -28,19 +28,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO register(UserRegisterDTO dto) {
-        User user = userRepository.findByEmail(dto.email())
-                .orElseThrow(() -> new EmailAlreadyExistsException("El email " + dto.email() + "ya existe"));
+        if (userRepository.existsByEmail(dto.email())) {
+            throw new EmailAlreadyExistsException(dto.email());
+        }
 
-        userMapper.toEntity(dto);
-
-        user.builder();
-        // Rol por defecto: el registro público no puede ser un ROLE_ADMIN.
+        User user = userMapper.toEntity(dto);
+        user.setPassword(passwordEncoder.encode(dto.password()));
+        // Rol por defecto: el registro público nunca debe poder auto-asignarse
+        // ROLE_ADMIN.
         user.setRoles(Set.of(RoleType.ROLE_USER));
 
         User saved = userRepository.save(user);
         return userMapper.toResponseDTO(saved);
     }
-    
 
     @Override
     public UserResponseDTO findByEmail(String email) {
@@ -52,26 +52,28 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public List<UserResponseDTO> findAll() {
-        //user.getRoles().stream().map(String::valueOf).collect(Collectors.toSet()) -> sacamos el set desde los enum de RoleType
-        //Con el String::valueOf sacamos el valor del texto del enum sin warning por null
-           return userRepository.findAll().stream()
-            .map(user -> new UserResponseDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(),user.getRoles().stream().map(String::valueOf).collect(Collectors.toSet()), user.getCreatedAt()))
-            .toList(); // ¡Aquí aplicamos los Streams que vimos al inicio!
+        // user.getRoles().stream().map(String::valueOf).collect(Collectors.toSet()) ->
+        // sacamos el set desde los enum de RoleType
+        // Con el String::valueOf sacamos el valor del texto del enum sin warning por
+        // null
+        return userRepository.findAll().stream()
+                .map(user -> new UserResponseDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(),
+                        user.getRoles().stream().map(String::valueOf).collect(Collectors.toSet()), user.getCreatedAt()))
+                .toList(); // ¡Aquí aplicamos los Streams que vimos al inicio!
 
     }
 
-//     @Override
-//     public UserResponseDto login(UserRegisterDTO dto) {
-//         // TODO Auto-generated method stub
-//         UserResponseDTO dtoLogin=userMapper.toResponseDTO(null);
-//             userRepository.existsByEmail(dto.email())
-//             if (userRepository.existsByEmail(dto.email())) {
-//                 dtoLogin=userMapper.toResponseDTO(dto);
-//                 return dtoLogin;
-                
-//                     }
-            
+    // @Override
+    // public UserResponseDto login(UserRegisterDTO dto) {
+    // // TODO Auto-generated method stub
+    // UserResponseDTO dtoLogin=userMapper.toResponseDTO(null);
+    // userRepository.existsByEmail(dto.email())
+    // if (userRepository.existsByEmail(dto.email())) {
+    // dtoLogin=userMapper.toResponseDTO(dto);
+    // return dtoLogin;
 
-//         return dtoLogin;
-//     }
+    // }
+
+    // return dtoLogin;
+    // }
 }

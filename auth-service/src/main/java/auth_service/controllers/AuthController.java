@@ -68,7 +68,7 @@ public class AuthController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers(@RequestParam String param) {
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
 
         List<UserResponseDTO> users = userService.findAll();
         return ResponseEntity.ok(users);
