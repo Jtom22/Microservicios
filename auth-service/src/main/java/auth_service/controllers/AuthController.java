@@ -26,7 +26,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -39,7 +38,6 @@ public class AuthController {
     @Value("${jwt.expiration-ms}")
     private long jwtExpirationMs;
 
-
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRegisterDTO dto) {
         UserResponseDTO created = userService.register(dto);
@@ -51,7 +49,7 @@ public class AuthController {
         return ResponseEntity.ok(userService.findByEmail(email));
     }
 
-        @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO dto) {
         // Si el email/password no coinciden, esto lanza BadCredentialsException.
         // La capturamos en el GlobalExceptionHandler para devolver 401 en vez de 500.
@@ -60,10 +58,10 @@ public class AuthController {
         var authentication = authenticationManager.authenticate(authToken);
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        
+
         String token = jwtService.generateToken(userDetails);
 
-        //recuerda que el jwrExpirations tiene valor en el application.yml
+        // recuerda que el jwrExpirations tiene valor en el application.yml
         return ResponseEntity.ok(LoginResponseDTO.of(token, jwtExpirationMs));
     }
 
@@ -73,6 +71,5 @@ public class AuthController {
         List<UserResponseDTO> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
-    
-    
+
 }
