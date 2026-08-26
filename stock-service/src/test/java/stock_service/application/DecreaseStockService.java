@@ -9,12 +9,11 @@ import stock_service.domain.model.StockItem;
 import stock_service.domain.port.in.DecreaseStockUseCase;
 import stock_service.domain.port.out.StockRepositoryPort;
  
-/**
- * Esta clase SÍ vive en application (no en domain) porque orquesta: llama al
- * puerto de salida, coordina varios productos de un mismo pedido. La regla de
- * negocio en sí (no permitir stock negativo) vive dentro de StockItem.decrease(),
- * en el dominio puro — acá solo la invocamos.
- */
+
+// Esta clase SÍ vive en application (no en domain) porque orquesta: llama al
+// puerto de salida, coordina varios productos de un mismo pedido. La regla de
+// negocio en sí (no permitir stock negativo) vive dentro de StockItem.decrease(),
+// en el dominio puro — aqui solo la invocamos.
 @Service
 public class DecreaseStockService implements DecreaseStockUseCase {
  
@@ -26,13 +25,14 @@ public class DecreaseStockService implements DecreaseStockUseCase {
  
     //Genera cola para procesar cada uno de los objetos(iterables) de manera secuencial asincrona(no bloquea)
     // y entonces reduce el stock de ese objeto
+    //public Mono<Void> handle(...)->Espera promesa asincrona
     @Override
     public Mono<Void> handle(OrderCreatedEvent event) {
         return Flux.fromIterable(event.items())
                 .concatMap(this::decreaseOneItem)
                 .then();//Señal de exito
     }
-    //public Mono<Void> handle(...)->Espera promesa asincrona
+
  
     private Mono<StockItem> decreaseOneItem(OrderCreatedEvent.OrderItem item) {
         return stockRepository.findByProductId(item.productId())
