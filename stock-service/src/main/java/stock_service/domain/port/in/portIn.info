@@ -1,0 +1,4 @@
+En esta carpeta de port/in:
+Estan los servicios que podemos pedir a la app en este caso es disminuir el stock de un elemento,
+pero puede ser modificar precio de un objeto son los services basicamente,
+Al ser el por in es la interfaz que luego usaremos en el adapter, es el contrato del adapter vaya
