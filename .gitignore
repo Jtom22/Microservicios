@@ -1,0 +1,26 @@
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+#VsCode
+.vscode/
+
+# Carpetas de Compilación (¡Muy importante!)
+target/
+build/
+*.class
+bin/
+
+#MongoDB
+.mongo_data/
+
+# Logs del sistema
+*.log
+
+# Configuraciones locales de base de datos o docker si las tienes locales
+.env
+.env.*
+!.env.example

@@ -1,0 +1,32 @@
+#Gestionar el env para que funcionen las variables de entorno en  Configurations>Edit (donde los tres puentos intelij)
+spring:
+
+  application:
+    name: auth-service
+
+  # 📥 Esto obliga a Spring a cargar tu .env global en local de forma nativa
+  config:
+    import:
+      optional:file:../.env[.properties]
+
+  mongodb:
+    host: localhost
+    port: 27017
+    database: auth_oauth_db
+    username: ${MONGO_USER}
+    password: ${MONGO_PASSWORD}
+    authentication-database: admin
+
+server:
+  port: ${SERVER_PORT:8081}
+
+logging:
+  level:
+    '[org.springframework.data.mongodb.core]': DEBUG
+
+security:
+  authorization: enabled
+
+jwt:
+   secret: ${JWT_SECRET}
+   expiration-ms: ${JWT_EXPIRATION_MS:86400000}
