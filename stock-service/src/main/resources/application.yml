@@ -28,3 +28,10 @@ app:
 logging:
   level:
     stock_service: DEBUG
+
+security:
+  authorization: enabled
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: ${JWT_EXPIRATION_MS}
