@@ -3,8 +3,8 @@
 *.iws
 *.iml
 *.ipr
-out/
-!**/adapter/out/**
+/out/
+
 
 #VsCode
 .vscode/
