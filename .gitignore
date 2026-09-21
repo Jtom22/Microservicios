@@ -4,6 +4,7 @@
 *.iml
 *.ipr
 out/
+!**/adapter/out/**
 
 #VsCode
 .vscode/
