@@ -23,6 +23,7 @@
         <module>order-service</module> -->
         <module>auth-service</module>
         <module>stock-service</module>
+        <module>orders-service</module>
     </modules>
 
     <properties>
